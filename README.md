@@ -1,16 +1,15 @@
 # Group-17
-
-We will create an app which will assist the user in parking their autonomous car.
-- The app will tackle issues such as parallel parking.
-- If time allows it then we will create additional systems so the car can locate and park in a parking lot by itself.
+We will create a mobile app which will allow the user to control his car with his phone and set it in autonomous mode when he needs/wants to.
 
 **Why?**
-- People in general have problems with parallel parking so we think this niche might be very helpful.
-- Having the car park for itself would allow the user to avoid stress in situations where he might be pressed for time. 
+- A lot of drivers are lazy.
+- Drivers who are on a trip might get tired and want to rest for a bit (that’s where the autonomous mode comes in)
+
 
 **How?**
-- We will use the sensors to make sure the car doesn’t hit another car whilst parking.
-- Using the sensors the car will be able to find an unoccupied slot and park in it.
+- We are going to use the car’s sensors to detect obstacles and make the adjustments that are necessary to stop/have the car avoid it before collision.
+- In order to remotely control the car, a simple controller (in the app) will be created.
+
 
 **The technology we're gonna use:**
 - Arduino car
