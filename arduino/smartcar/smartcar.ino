@@ -18,7 +18,8 @@ SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void autoStop(){
   char input = Serial.read();
-  if(front.getDistance()>0 and front.getDistance()<150 and !flag){
+  const auto distance = front.getDistance();
+  if(distance>0 and distance<150 and !flag){
     car.setSpeed(0);
    } 
   
