@@ -8,48 +8,86 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
         android:background="@android:color/transparent"
         android:rotation="90"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
         app:iconTint="#FFFD4242"
-        tools:layout_editor_absoluteX="210dp"
-        tools:layout_editor_absoluteY="799dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.654" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
         android:background="@android:color/transparent"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
         app:iconTint="#FFFD4242"
-        tools:layout_editor_absoluteX="95dp"
-        tools:layout_editor_absoluteY="896dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.784" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
         android:background="@android:color/transparent"
         android:rotation="180"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
         app:iconTint="#FFFD4242"
-        tools:layout_editor_absoluteX="328dp"
-        tools:layout_editor_absoluteY="894dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.834"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.784" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/button4"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
         android:background="@android:color/transparent"
         android:rotation="270"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
         app:iconTint="#FFFD4242"
-        tools:layout_editor_absoluteX="210dp"
-        tools:layout_editor_absoluteY="991dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.914" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="252dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="36dp"
+        android:paddingHorizontal="40dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:switchMinWidth="60dp"
+        android:text="Auto drive"
+        android:textSize="20sp"
+        android:thumbTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
