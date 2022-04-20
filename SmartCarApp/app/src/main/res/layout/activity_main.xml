@@ -6,13 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EEEEEEE!"
+    <Button
+        android:id="@+id/button"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:background="@android:color/transparent"
+        android:rotation="90"
+        android:text=""
+        app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
+        app:iconTint="#FFFD4242"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:background="@android:color/transparent"
+        android:text=""
+        app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
+        app:iconTint="#FFFD4242"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        app:layout_constraintVertical_bias="0.752" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:background="@android:color/transparent"
+        android:rotation="180"
+        android:text=""
+        app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
+        app:iconTint="#FFFD4242"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/button5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.788" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:background="@android:color/transparent"
+        android:rotation="270"
+        android:text=""
+        app:icon="@drawable/icons8_chevron_left_75"
+        app:iconSize="100dp"
+        app:iconTint="#FFFD4242"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button5"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:paddingHorizontal="40dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:switchMinWidth="60dp"
+        android:text="Auto drive"
+        android:textSize="20sp"
+        android:thumbTint="@color/white"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/pikpng_com_stop_png_439828"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        app:layout_constraintVertical_bias="0.752" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
