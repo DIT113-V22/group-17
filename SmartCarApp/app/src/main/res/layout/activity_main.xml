@@ -54,7 +54,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.788" />
+        app:layout_constraintVertical_bias="0.781" />
 
     <Button
         android:id="@+id/button4"
@@ -75,8 +75,10 @@
 
     <Switch
         android:id="@+id/switch1"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
+        android:layout_width="262dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="36dp"
         android:paddingHorizontal="40dp"
         android:scaleX="1.5"
         android:scaleY="1.5"
@@ -84,8 +86,8 @@
         android:text="Auto drive"
         android:textSize="20sp"
         android:thumbTint="@color/white"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="36dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button5"
