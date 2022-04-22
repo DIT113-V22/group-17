@@ -19,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void forward(View view) {
-
-    }
+    public void forward(View view) {System.out.println("f");}
+    public void reverse(View view) {System.out.println("b");}
+    public void turnRight(View view) {System.out.println("r");}
+    public void turnLeft(View view) {System.out.println("l");}
+    public void stopCar(View view) {System.out.println("s");}
 }
