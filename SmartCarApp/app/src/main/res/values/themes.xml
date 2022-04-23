@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/baby_blue</item>
         <item name="colorOnPrimary">@color/Red_tester</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purple_1</item>
+        <item name="colorSecondary">@color/switch_colour</item>
         <item name="colorSecondaryVariant">@color/Red_tester</item>
         <item name="colorOnSecondary">@color/Red_tester</item>
         <!-- Status bar color. -->
