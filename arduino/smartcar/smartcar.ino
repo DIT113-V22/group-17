@@ -1,7 +1,10 @@
+#include <vector>
 #include <Smartcar.h>
 #include <MQTT.h>
 #include <WiFi.h>
-
+#ifdef __SMCE__
+#include <OV767X.h>
+#endif
 
 WiFiClient net;
 
@@ -9,6 +12,8 @@ MQTTClient mqtt;
 
 char ssid[] = " ";
 char pass[] = " ";
+
+const auto oneSecond = 1000UL;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
 const unsigned int MAX_DISTANCE = 300; //set the distance to 300
@@ -27,6 +32,8 @@ BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 SimpleCar car(control);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+std::vector<char> frameBuffer;
+
 
 void autoStop(String message){
   const auto distance = front.getDistance();
@@ -62,7 +69,12 @@ const auto mqttBrokerUrl = "127.0.0.1";
 void setup()
 {
     Serial.begin(9600);
-
+    
+  #ifdef __SMCE__
+  Camera.begin(QVGA, RGB888, 15);
+  frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
+  #endif
+    
   WiFi.begin(ssid, pass); 
   mqtt.begin(mqttBrokerUrl, 1883, net);
    
@@ -95,9 +107,23 @@ void loop()
     if (mqtt.connected()) {
     mqtt.loop();
     autoStop("");
+    const auto currentTime = millis();
+#ifdef __SMCE__
+    static auto previousFrame = 0UL;
+    if (currentTime - previousFrame >= 65) {
+      previousFrame = currentTime;
+      Camera.readFrame(frameBuffer.data());
+      mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
+                   false, 0);
     }
-    
-    
+#endif
+    static auto previousTransmission = 0UL;
+    if (currentTime - previousTransmission >= oneSecond) {
+      previousTransmission = currentTime;
+      const auto distance = String(front.getDistance());
+      mqtt.publish("/smartcar/ultrasound/front", distance);
+    }
+   }
     Serial.println(front.getDistance());
     delay(100);
 }
