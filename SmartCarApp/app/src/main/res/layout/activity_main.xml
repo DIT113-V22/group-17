@@ -6,44 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="442dp"
+        android:layout_height="264dp"
+        android:layout_weight="0.3"
+        android:contentDescription="cameraView"
+        app:layout_constraintBottom_toTopOf="@+id/forward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.177" />
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/forward"
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:onClick="forward"
         android:rotation="90"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
         app:iconSize="100dp"
         app:iconTint="#FFFD4242"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/stopCar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/turnLeft"
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:onClick="turnLeft"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
         app:iconSize="100dp"
         app:iconTint="#FFFD4242"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/stopCar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
-        app:layout_constraintVertical_bias="0.752" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/turnRight"
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:onClick="turnRight"
         android:rotation="180"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
@@ -52,15 +69,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/button5"
+        app:layout_constraintStart_toEndOf="@+id/stopCar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.781" />
+        app:layout_constraintVertical_bias="0.808"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/reverse"
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:onClick="reverse"
         android:rotation="270"
         android:text=""
         app:icon="@drawable/icons8_chevron_left_75"
@@ -68,17 +87,31 @@
         app:iconTint="#FFFD4242"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/stopCar"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/stopCar"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:background="@android:color/transparent"
+        android:foreground="@drawable/pikpng_com_stop_png_439828"
+        android:onClick="stopCar"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808" />
 
     <Switch
-        android:id="@+id/switch1"
-        android:layout_width="262dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="36dp"
+        android:id="@+id/autoMode"
+        android:layout_width="268dp"
+        android:layout_height="54dp"
         android:paddingHorizontal="40dp"
         android:scaleX="1.5"
         android:scaleY="1.5"
@@ -86,21 +119,10 @@
         android:text="Auto drive"
         android:textSize="20sp"
         android:thumbTint="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
-        android:background="@android:color/transparent"
-        android:foreground="@drawable/pikpng_com_stop_png_439828"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
-        app:layout_constraintVertical_bias="0.752" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
 </androidx.constraintlayout.widget.ConstraintLayout>
