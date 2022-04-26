@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -15,6 +18,8 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SmartCarApp";
@@ -34,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         mCameraView = findViewById(R.id.imageView);
-
         connectToMqttBroker();
     }
 
@@ -67,10 +71,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
-
+                    playAudio(R.raw.connected_to_car,2200);
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
+
+
 
                     mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
@@ -134,22 +140,42 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void reverse(View view) {
+        playAudio(R.raw.going_backward,1050);
         drive("myfirst/test","b","Moving backward");
     }
 
     public void turnRight(View view) {
+        playAudio(R.raw.turning_right,950);
         drive("myfirst/test","r","Turning right");
     }
 
     public void turnLeft(View view) {
+        playAudio(R.raw.turning_left,950);
         drive("myfirst/test","l","Turning left");
     }
 
     public void forward(View view) {
+        playAudio(R.raw.going_forward,1000);
         drive("myfirst/test","f","Moving forward");
     }
 
     public void stopCar(View view) {
+        playAudio(R.raw.stopping_car,1050);
         drive("myfirst/test","s","Stopping");
+    }
+    public void playAudio(int AudioFile,int millis){
+        final MediaPlayer mp3 = MediaPlayer.create(this, AudioFile);
+        CountDownTimer cntr_aCounter = new CountDownTimer(millis, 1000) {
+            @Override
+            public void onTick(long l) {
+                mp3.start();
+            }
+
+            @Override
+            public void onFinish() {
+                mp3.stop();
+            }
+
+        };cntr_aCounter.start();
     }
 }
