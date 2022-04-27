@@ -3,20 +3,45 @@ name: Android CI
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  build-app:
+    runs-on: ubuntu-latest
     steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
       - name: Clone Repo
         uses: actions/checkout@v2
-      - name: Set up our JDK environment
-        uses: actions/setup-java@v3
-        with: 
-          distribution: 'temurin'
-          java-version: '11'
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-	- name: Make gradlew executable
-        run: chmod +x ./gradlew
-      - name: Execute Gradle Build
-        working-directory: ./SmartCarApp
-        run: ./gradlew build
+      - name: Build SmartCarApp
+        run: |
+          cd SmartCarApp
+          ./gradlew build --stacktrace
+
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Clone Repo
+        uses: actions/checkout@v2
+      - name: Run unit tests for SmartCarApp
+        run: |
+          cd SmartCarApp
+          ./gradlew test --info
+
+  run-instrumented-tests:
+    runs-on: macos-latest
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Clone Repo
+        uses: actions/checkout@v2
+      - name: Run instrumented tests for SmartCarApp
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: cd SmartCarApp ./gradlew connectedAndroidTest
