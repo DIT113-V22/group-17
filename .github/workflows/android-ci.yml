@@ -16,4 +16,5 @@ jobs:
         distribution: 'temurin'
         cache: gradle
     - name: Build with Gradle
-      run: cd SmartCarApp && ./gradlew build
+      
+      run: sed $'s/\r$//' ./install.sh > ./install.Unix.sh && cd SmartCarApp && ./gradlew build
