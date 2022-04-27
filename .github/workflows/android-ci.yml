@@ -15,8 +15,6 @@ jobs:
           java-version: '11'
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - name: Execute Gradle Build
         working-directory: ./SmartCarApp
         run: ./gradlew build
