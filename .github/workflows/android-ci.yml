@@ -17,4 +17,4 @@ jobs:
         cache: gradle
     - name: Build with Gradle
       
-      run: sed $'s/\r$//' ./install.sh > ./install.Unix.sh && cd SmartCarApp && ./gradlew build
+      run: cd SmartCarApp && ./gradlew build
