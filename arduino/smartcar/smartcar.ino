@@ -40,35 +40,35 @@ DirectionlessOdometer rightOdometer{ arduinoRuntime,
                                      []() { rightOdometer.update(); },
                                      pulsesPerMeter };
  
-DistanceCar car1(arduinoRuntime,control, leftOdometer, rightOdometer);
+DistanceCar car(arduinoRuntime,control, leftOdometer, rightOdometer);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
 
 void autoStop(String message){
   const auto distance = front.getDistance();
   if(distance>0 and distance<150 and !flag){
-    car1.setSpeed(0);
+    car.setSpeed(0);
    } 
   if(message == "l"){
     flag == false;
-    car1.setSpeed(fSpeed);
-    car1.setAngle(lDegrees);  
+    car.setSpeed(fSpeed);
+    car.setAngle(lDegrees);  
   }else if(message == "r"){
     flag = false;
-    car1.setSpeed(fSpeed);
-    car1.setAngle(rDegrees);
+    car.setSpeed(fSpeed);
+    car.setAngle(rDegrees);
   }else if(message == "f"){
     flag = false;
-    car1.setSpeed(fSpeed);
-    car1.setAngle(0);
+    car.setSpeed(fSpeed);
+    car.setAngle(0);
   } else if(message == "b"){
     flag = true;
-    car1.setSpeed(bSpeed);
-    car1.setAngle(0);
+    car.setSpeed(bSpeed);
+    car.setAngle(0);
   }else if(message == "s"){
     flag = false;
-    car1.setSpeed(0);
-    car1.setAngle(0);
+    car.setSpeed(0);
+    car.setAngle(0);
   }
  
 }
@@ -137,7 +137,7 @@ void loop()
     float parseFloat;
     if (currentTime - previousTime >= 65) {
         previousTime = currentTime;
-        const auto avgOdometerSpeed = String(car1.getSpeed());
+        const auto avgOdometerSpeed = String(car.getSpeed());
         mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
     }
    }
