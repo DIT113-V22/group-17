@@ -28,7 +28,7 @@ ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
-SimpleCar car(control);
+//SimpleCar car(control);
 unsigned int pulsesPerMeter = 600;
  
 DirectionlessOdometer leftOdometer{ arduinoRuntime,
@@ -47,28 +47,28 @@ std::vector<char> frameBuffer;
 void autoStop(String message){
   const auto distance = front.getDistance();
   if(distance>0 and distance<150 and !flag){
-    car.setSpeed(0);
+    car1.setSpeed(0);
    } 
   if(message == "l"){
     flag == false;
-    car.setSpeed(fSpeed);
-    car.setAngle(lDegrees);  
+    car1.setSpeed(fSpeed);
+    car1.setAngle(lDegrees);  
   }else if(message == "r"){
     flag = false;
-    car.setSpeed(fSpeed);
-    car.setAngle(rDegrees);
+    car1.setSpeed(fSpeed);
+    car1.setAngle(rDegrees);
   }else if(message == "f"){
     flag = false;
-    car.setSpeed(fSpeed);
-    car.setAngle(0);
+    car1.setSpeed(fSpeed);
+    car1.setAngle(0);
   } else if(message == "b"){
     flag = true;
-    car.setSpeed(bSpeed);
-    car.setAngle(0);
+    car1.setSpeed(bSpeed);
+    car1.setAngle(0);
   }else if(message == "s"){
     flag = false;
-    car.setSpeed(0);
-    car.setAngle(0);
+    car1.setSpeed(0);
+    car1.setAngle(0);
   }
  
 }
