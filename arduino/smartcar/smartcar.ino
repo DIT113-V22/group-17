@@ -28,7 +28,6 @@ ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
-//SimpleCar car(control);
 unsigned int pulsesPerMeter = 600;
  
 DirectionlessOdometer leftOdometer{ arduinoRuntime,
@@ -142,6 +141,5 @@ void loop()
     }
    }
     Serial.println(front.getDistance());
-   // Serial.println(leftOdometer.getDistance());
     delay(100);
 }
