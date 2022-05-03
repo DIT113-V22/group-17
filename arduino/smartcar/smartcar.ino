@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #include <Smartcar.h>
 #include <MQTT.h>
 #include <WiFi.h>
@@ -16,6 +17,9 @@ char pass[] = " ";
 const auto oneSecond = 1000UL;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
+//const int ODOMETER_DISTANCE_PIN    = 35;
+
+unsigned long pulsesPerMeter = 10;
 const unsigned int MAX_DISTANCE = 300; //set the distance to 300
 const int fSpeed   = 70;  // 70% of the full speed forward
 const int bSpeed   = -70; // 70% of the full speed backward
@@ -31,8 +35,19 @@ BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 SimpleCar car(control);
+    
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
+
+DirectionlessOdometer leftOdometer{ arduinoRuntime,
+                                    smartcarlib::pins::v2::leftOdometerPin,
+                                    []() { leftOdometer.update(); },
+                                    pulsesPerMeter };
+DirectionlessOdometer rightOdometer{ arduinoRuntime,
+                                     smartcarlib::pins::v2::rightOdometerPin,
+                                     []() { rightOdometer.update(); },
+                                     pulsesPerMeter };
+
 
 
 void autoStop(String message){
@@ -69,12 +84,12 @@ const auto mqttBrokerUrl = "127.0.0.1";
 void setup()
 {
     Serial.begin(9600);
-    
+   
   #ifdef __SMCE__
   Camera.begin(QVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
-    
+  
   WiFi.begin(ssid, pass); 
   mqtt.begin(mqttBrokerUrl, 1883, net);
    
@@ -123,7 +138,21 @@ void loop()
       const auto distance = String(front.getDistance());
       mqtt.publish("/smartcar/ultrasound/front", distance);
     }
+
+    static auto previousTime = 0UL;
+    float parseFloat;
+    if (currentTime - previousTime >= 65) {
+        previousTime = currentTime;
+        float  leftOdometerSpeed  = float(leftOdometer.getSpeed());
+        float  rightOdometerSpeed = float(rightOdometer.getSpeed());
+        
+        const auto avgOdometerSpeed = String((leftOdometerSpeed + rightOdometerSpeed)/2);
+        //std::string s = std::to_string(avgOdometerSpeed);
+        //const char* b = s.c_str();
+        mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
+    }
    }
     Serial.println(front.getDistance());
+    Serial.println(leftOdometer.getDistance());
     delay(100);
 }
