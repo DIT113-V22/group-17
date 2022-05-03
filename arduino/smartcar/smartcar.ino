@@ -146,11 +146,10 @@ void loop()
         float  leftOdometerSpeed  = float(leftOdometer.getSpeed());
         float  rightOdometerSpeed = float(rightOdometer.getSpeed());
         
-        float avgOdometerSpeed = ((leftOdometerSpeed + rightOdometerSpeed)/2);
-        
-        std::string s = std::to_string(avgOdometerSpeed);
-        const char* b = s.c_str();
-        mqtt.publish("/smartcar/speedometer",  b); 
+        const auto avgOdometerSpeed = String((leftOdometerSpeed + rightOdometerSpeed)/2);
+        //std::string s = std::to_string(avgOdometerSpeed);
+        //const char* b = s.c_str();
+        mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
     }
    }
     Serial.println(front.getDistance());
