@@ -17,8 +17,6 @@ char pass[] = " ";
 const auto oneSecond = 1000UL;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
-
-unsigned long pulsesPerMeter = 10;
 const unsigned int MAX_DISTANCE = 300; //set the distance to 300
 const int fSpeed   = 70;  // 70% of the full speed forward
 const int bSpeed   = -70; // 70% of the full speed backward
@@ -31,10 +29,20 @@ BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 SimpleCar car(control);
-DirectionlessOdometer odometer(arduinoRuntime, smartcarlib::pins::v2::leftOdometerPin, []() { odometer.update(); }, 100);
+unsigned int pulsesPerMeter = 600;
+ 
+DirectionlessOdometer leftOdometer{ arduinoRuntime,
+                                    smartcarlib::pins::v2::leftOdometerPin,
+                                    []() { leftOdometer.update(); },
+                                    pulsesPerMeter };
+DirectionlessOdometer rightOdometer{ arduinoRuntime,
+                                     smartcarlib::pins::v2::rightOdometerPin,
+                                     []() { rightOdometer.update(); },
+                                     pulsesPerMeter };
+ 
+DistanceCar car1(arduinoRuntime,control, leftOdometer, rightOdometer);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
-DistanceCar car1(arduinoRuntime, control, odometer);
 
 void autoStop(String message){
   const auto distance = front.getDistance();
