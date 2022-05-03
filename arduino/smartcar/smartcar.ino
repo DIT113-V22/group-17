@@ -17,7 +17,6 @@ char pass[] = " ";
 const auto oneSecond = 1000UL;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
-//const int ODOMETER_DISTANCE_PIN    = 35;
 
 unsigned long pulsesPerMeter = 10;
 const unsigned int MAX_DISTANCE = 300; //set the distance to 300
@@ -27,28 +26,15 @@ const int lDegrees = -75; // degrees to turn left
 const int rDegrees = 75;  // degrees to turn right
 bool flag = false;
 
-
-
-
 ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 SimpleCar car(control);
-    
+DirectionlessOdometer odometer(arduinoRuntime, smartcarlib::pins::v2::leftOdometerPin, []() { odometer.update(); }, 100);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
-
-DirectionlessOdometer leftOdometer{ arduinoRuntime,
-                                    smartcarlib::pins::v2::leftOdometerPin,
-                                    []() { leftOdometer.update(); },
-                                    pulsesPerMeter };
-DirectionlessOdometer rightOdometer{ arduinoRuntime,
-                                     smartcarlib::pins::v2::rightOdometerPin,
-                                     []() { rightOdometer.update(); },
-                                     pulsesPerMeter };
-
-
+DistanceCar car1(arduinoRuntime, control, odometer);
 
 void autoStop(String message){
   const auto distance = front.getDistance();
@@ -143,16 +129,11 @@ void loop()
     float parseFloat;
     if (currentTime - previousTime >= 65) {
         previousTime = currentTime;
-        float  leftOdometerSpeed  = float(leftOdometer.getSpeed());
-        float  rightOdometerSpeed = float(rightOdometer.getSpeed());
-        
-        const auto avgOdometerSpeed = String((leftOdometerSpeed + rightOdometerSpeed)/2);
-        //std::string s = std::to_string(avgOdometerSpeed);
-        //const char* b = s.c_str();
+        const auto avgOdometerSpeed = String(car1.getSpeed());
         mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
     }
    }
     Serial.println(front.getDistance());
-    Serial.println(leftOdometer.getDistance());
+   // Serial.println(leftOdometer.getDistance());
     delay(100);
 }
