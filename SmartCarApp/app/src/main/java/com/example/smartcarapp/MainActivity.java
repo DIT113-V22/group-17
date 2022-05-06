@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void playAudio(int AudioFile){
         final MediaPlayer mp3 = MediaPlayer.create(this, AudioFile);
-        CountDownTimer cntr_aCounter = new CountDownTimer(900, 1000) {
+        CountDownTimer cntr_aCounter = new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long l) {
                 mp3.start();
