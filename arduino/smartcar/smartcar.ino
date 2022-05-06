@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #include <Smartcar.h>
 #include <MQTT.h>
 #include <WiFi.h>
@@ -23,17 +24,24 @@ const int lDegrees = -75; // degrees to turn left
 const int rDegrees = 75;  // degrees to turn right
 bool flag = false;
 
-
-
-
 ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
 BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
-SimpleCar car(control);
+unsigned int pulsesPerMeter = 600;
+ 
+DirectionlessOdometer leftOdometer{ arduinoRuntime,
+                                    smartcarlib::pins::v2::leftOdometerPin,
+                                    []() { leftOdometer.update(); },
+                                    pulsesPerMeter };
+DirectionlessOdometer rightOdometer{ arduinoRuntime,
+                                     smartcarlib::pins::v2::rightOdometerPin,
+                                     []() { rightOdometer.update(); },
+                                     pulsesPerMeter };
+ 
+DistanceCar car(arduinoRuntime,control, leftOdometer, rightOdometer);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
-
 
 void autoStop(String message){
   const auto distance = front.getDistance();
@@ -69,12 +77,12 @@ const auto mqttBrokerUrl = "127.0.0.1";
 void setup()
 {
     Serial.begin(9600);
-    
+   
   #ifdef __SMCE__
   Camera.begin(QVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
-    
+  
   WiFi.begin(ssid, pass); 
   mqtt.begin(mqttBrokerUrl, 1883, net);
    
@@ -122,6 +130,14 @@ void loop()
       previousTransmission = currentTime;
       const auto distance = String(front.getDistance());
       mqtt.publish("/smartcar/ultrasound/front", distance);
+    }
+
+    static auto previousTime = 0UL;
+    float parseFloat;
+    if (currentTime - previousTime >= 65) {
+        previousTime = currentTime;
+        const auto avgOdometerSpeed = String(car.getSpeed());
+        mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
     }
    }
     Serial.println(front.getDistance());
