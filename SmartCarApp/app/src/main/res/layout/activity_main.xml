@@ -25,10 +25,10 @@
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:onClick="forward"
         android:rotation="90"
         android:text=""
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         app:backgroundTint="@android:color/transparent"
         app:icon="@drawable/icons8_chevron_left_50"
         app:iconSize="100dp"
@@ -47,10 +47,10 @@
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:onClick="turnLeft"
         android:text=""
         app:backgroundTint="@android:color/transparent"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         app:icon="@drawable/icons8_chevron_left_50"
         app:iconSize="100dp"
         app:iconTint="@color/Red_tester"
@@ -136,5 +136,18 @@
         android:thumbTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/speechMic"
+        android:layout_width="96dp"
+        android:layout_height="86dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/turnLeft"
+        app:layout_constraintEnd_toStartOf="@+id/forward"
+        app:layout_constraintHorizontal_bias="0.703"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.838"
+        app:srcCompat="@drawable/google_voice" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

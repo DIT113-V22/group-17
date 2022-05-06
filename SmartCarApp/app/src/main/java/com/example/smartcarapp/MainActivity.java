@@ -1,17 +1,21 @@
 package com.example.smartcarapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -20,6 +24,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SmartCarApp";
@@ -29,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
 
-    private MqttClient mMqttClient;
+    public static MqttClient mMqttClient;
     private boolean isConnected = false;
-    private ImageView mCameraView;
+    public static ImageView mCameraView;
+    TextView txtView;
+    public ImageView mic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         mCameraView = findViewById(R.id.imageView);
         connectToMqttBroker();
+        mic = findViewById(R.id.speechMic);
+        mic.setOnClickListener(view -> {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(intent, 10);
+            }
+        });
     }
 
     @Override
@@ -71,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
-                    playAudio(R.raw.connected_to_car,2200);
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
@@ -99,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                public void messageArrived(String topic, MqttMessage message) {
                     if (topic.equals("/smartcar/camera")) {
                         final Bitmap bm = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
 
@@ -140,32 +157,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void reverse(View view) {
-        playAudio(R.raw.going_backward,1050);
         drive("myfirst/test","b","Moving backward");
     }
 
     public void turnRight(View view) {
-        playAudio(R.raw.turning_right,950);
         drive("myfirst/test","r","Turning right");
     }
 
     public void turnLeft(View view) {
-        playAudio(R.raw.turning_left,950);
         drive("myfirst/test","l","Turning left");
     }
 
-    public void forward(View view) {
-        playAudio(R.raw.going_forward,1000);
-        drive("myfirst/test","f","Moving forward");
+   public void forward(View view) {
+       drive("myfirst/test","f","Moving forward");
     }
 
     public void stopCar(View view) {
-        playAudio(R.raw.stopping_car,1050);
         drive("myfirst/test","s","Stopping");
     }
-    public void playAudio(int AudioFile,int millis){
+
+    public void playAudio(int AudioFile){
         final MediaPlayer mp3 = MediaPlayer.create(this, AudioFile);
-        CountDownTimer cntr_aCounter = new CountDownTimer(millis, 1000) {
+        CountDownTimer cntr_aCounter = new CountDownTimer(900, 1000) {
             @Override
             public void onTick(long l) {
                 mp3.start();
@@ -177,5 +190,62 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };cntr_aCounter.start();
+    }
+
+    private String message;
+    private int audioPath;
+
+    public  void speechCommands(int requestCode, int resultCode, Intent data){
+        if (requestCode==10 && resultCode == RESULT_OK && data != null) {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String stringResult = result.get(0);
+            if (stringResult.contains("forward")) {
+                message = "f";
+                audioPath = R.raw.going_forward;
+            } else if (stringResult.contains("backward")) {
+                audioPath = R.raw.going_backward;
+                message = "b";
+            } else if (stringResult.contains("left")) {
+                audioPath = R.raw.turning_left;
+                message = "l";
+            } else if (stringResult.contains("right")) {
+                audioPath = R.raw.turning_right;
+                message = "r";
+            } else if (stringResult.contains("stop")) {
+                audioPath = R.raw.stopping_car;
+                message = "s";
+            }else{
+                audioPath = 5;
+                message = "";
+            }
+
+            CountDownTimer cntr_aCounter = new CountDownTimer(150, 1000) {
+
+                @Override
+                public void onTick(long l) {
+                    //200 iq if statement
+                    if(audioPath!=5){
+                        playAudio(audioPath);
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    if(!message.equals("")){
+                        mMqttClient.publish("myfirst/test", message, 1, null);
+                    }
+                }
+
+            };cntr_aCounter.start();
+
+        }
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        speechCommands(requestCode,resultCode,data);
     }
 }

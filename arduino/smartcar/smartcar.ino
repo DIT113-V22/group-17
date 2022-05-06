@@ -71,7 +71,7 @@ void setup()
     Serial.begin(9600);
     
   #ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 15);
+  Camera.begin(QVGA, RGB888, 30);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
     
@@ -86,7 +86,6 @@ void setup()
     delay(1000);
     wifiStatus = WiFi.status();
   }
-
 
 Serial.println("Connecting to MQTT broker");
   while (!mqtt.connect("arduino", "public", "public")) {
@@ -110,7 +109,7 @@ void loop()
     const auto currentTime = millis();
 #ifdef __SMCE__
     static auto previousFrame = 0UL;
-    if (currentTime - previousFrame >= 65) {
+    if (currentTime - previousFrame >= 33) {
       previousFrame = currentTime;
       Camera.readFrame(frameBuffer.data());
       mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
