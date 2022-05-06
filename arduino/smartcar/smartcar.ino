@@ -23,7 +23,10 @@ const int lDegrees = -75; // degrees to turn left
 const int rDegrees = 75;  // degrees to turn right
 bool flag = false;
 
-
+ArduinoRuntime arduinoRuntime;
+BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
+BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
+DifferentialControl control(leftMotor, rightMotor);
 unsigned int pulsesPerMeter = 600;
  
 DirectionlessOdometer leftOdometer{ arduinoRuntime,
@@ -38,7 +41,6 @@ DirectionlessOdometer rightOdometer{ arduinoRuntime,
 DistanceCar car(arduinoRuntime,control, leftOdometer, rightOdometer);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
-
 
 void autoStop(String message){
   const auto distance = front.getDistance();
@@ -74,13 +76,12 @@ const auto mqttBrokerUrl = "127.0.0.1";
 void setup()
 {
     Serial.begin(9600);
-
-    
+   
   #ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 30);
+  Camera.begin(QVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
-    
+  
   WiFi.begin(ssid, pass); 
   mqtt.begin(mqttBrokerUrl, 1883, net);
    
@@ -116,7 +117,7 @@ void loop()
     const auto currentTime = millis();
 #ifdef __SMCE__
     static auto previousFrame = 0UL;
-    if (currentTime - previousFrame >= 33) {
+    if (currentTime - previousFrame >= 65) {
       previousFrame = currentTime;
       Camera.readFrame(frameBuffer.data());
       mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
@@ -129,7 +130,7 @@ void loop()
       const auto distance = String(front.getDistance());
       mqtt.publish("/smartcar/ultrasound/front", distance);
     }
-      
+
     static auto previousTime = 0UL;
     float parseFloat;
     if (currentTime - previousTime >= 65) {
