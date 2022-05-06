@@ -1,7 +1,10 @@
 package com.example.smartcarapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -10,6 +13,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,11 +37,33 @@ public class MainActivity extends AppCompatActivity {
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
+    SwitchCompat switchCompat;
     private TextView mSpeedometer;
+   
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.Theme_Dark);
+        } else {
+            setTheme(R.style.Theme_Light);
+        }
+        setContentView(R.layout.settings);
+        switchCompat = findViewById(R.id.darkMode_switch);
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            }
+
+
+        });
+
         setContentView(R.layout.activity_main);
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         mCameraView = findViewById(R.id.imageView);
@@ -174,6 +200,13 @@ public class MainActivity extends AppCompatActivity {
         playAudio(R.raw.stopping_car,1050);
         drive("myfirst/test","s","Stopping");
     }
+    public void settings(View view){
+        drive("myfirst/test", "s", "Stopping");
+        Intent i =new Intent(this, Settings.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+
     public void playAudio(int AudioFile,int millis){
         final MediaPlayer mp3 = MediaPlayer.create(this, AudioFile);
         CountDownTimer cntr_aCounter = new CountDownTimer(millis, 1000) {

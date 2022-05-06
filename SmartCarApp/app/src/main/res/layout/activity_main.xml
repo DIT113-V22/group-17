@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="0dp"
+    android:layout_gravity="center"
+    android:background="?attr/background_color"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
     <ImageView
@@ -18,24 +21,24 @@
         app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="0.356" />
 
     <Button
         android:id="@+id/forward"
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:onClick="forward"
         android:rotation="90"
         android:text=""
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         app:backgroundTint="@android:color/transparent"
         app:icon="@drawable/icons8_chevron_left_50"
         app:iconSize="100dp"
-        app:iconTint="@color/Red_tester"
+        app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toTopOf="@+id/stopCar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -47,19 +50,19 @@
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:onClick="turnLeft"
         android:text=""
         app:backgroundTint="@android:color/transparent"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         app:icon="@drawable/icons8_chevron_left_50"
         app:iconSize="100dp"
-        app:iconTint="@color/Red_tester"
+        app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/stopCar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808"
+        app:layout_constraintVertical_bias="0.715"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -74,13 +77,13 @@
         app:backgroundTint="@android:color/transparent"
         app:icon="@drawable/icons8_chevron_left_50"
         app:iconSize="100dp"
-        app:iconTint="@color/Red_tester"
+        app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/stopCar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808"
+        app:layout_constraintVertical_bias="0.715"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -95,7 +98,7 @@
         app:backgroundTint="@android:color/transparent"
         app:icon="@drawable/icons8_chevron_left_50"
         app:iconSize="100dp"
-        app:iconTint="@color/Red_tester"
+        app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -103,6 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/stopCar"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="SpeakableTextPresentCheck" />
+
 
     <Button
         android:id="@+id/stopCar"
@@ -113,13 +117,13 @@
         android:onClick="stopCar"
         android:text=""
         app:backgroundTint="@android:color/transparent"
+        app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808" />
-
+        app:layout_constraintVertical_bias="0.715" />
 
     <Switch
         android:id="@+id/autoMode"
@@ -132,11 +136,81 @@
         android:scaleY="1.5"
         android:switchMinWidth="60dp"
         android:text="Auto drive"
+        android:textColor="?attr/text_color"
         android:textSize="20sp"
         android:thumbTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="169dp"
+        android:layout_height="75dp"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text=""
+        app:icon="@drawable/icons8_video_games_64"
+        app:iconGravity="textStart"
+        app:iconSize="40dp"
+        app:iconTint="?attr/icon_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="169dp"
+        android:layout_height="75dp"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:onClick="settings"
+        android:text=""
+        app:icon="@drawable/icons8_settings_50"
+        app:iconSize="40dp"
+        app:iconGravity="textStart"
+        app:iconTint="?attr/icon_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="169dp"
+        android:layout_height="75dp"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text=""
+        app:icon="@drawable/icons8_house_50"
+        app:iconSize="40dp"
+        app:iconGravity="textStart"
+        app:iconTint="?attr/icon_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="538dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:divider="@color/Red_tester"
+        android:outlineAmbientShadowColor="@color/Red_tester"
+        android:outlineSpotShadowColor="@color/Red_tester"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reverse"
+        app:layout_constraintVertical_bias="0.88" />
     <View
         android:id="@+id/view"
         android:layout_width="115dp"
