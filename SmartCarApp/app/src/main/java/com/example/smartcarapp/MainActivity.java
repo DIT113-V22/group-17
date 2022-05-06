@@ -3,19 +3,20 @@ package com.example.smartcarapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -40,13 +41,32 @@ public class MainActivity extends AppCompatActivity {
     public static ImageView mCameraView;
     TextView txtView;
     public ImageView mic;
+    SwitchCompat switchCompat;
+    private TextView mSpeedometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.Theme_Dark);
+        } else {
+            setTheme(R.style.Theme_Light);
+        }
+        switchCompat = findViewById(R.id.darkMode_switch);
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            }
+        });
         setContentView(R.layout.activity_main);
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         mCameraView = findViewById(R.id.imageView);
+        mSpeedometer = findViewById(R.id.textView);
         connectToMqttBroker();
         mic = findViewById(R.id.speechMic);
         mic.setOnClickListener(view -> {
@@ -97,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
                     mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
+                    mMqttClient.subscribe("/smartcar/speedometer", QOS,null);
                 }
 
                 @Override
@@ -130,7 +151,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
                         mCameraView.setImageBitmap(bm);
-                    } else {
+                    }else if(topic.equals("/smartcar/speedometer")){
+                        double value = Double.parseDouble(message.toString());
+                        value = value * 100.0;
+                        int temp = (int) value;
+                        value = temp / 100.0;
+                        mSpeedometer.setText(value + "\nm/s");
+
+                    }else {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
                 }
@@ -175,6 +203,13 @@ public class MainActivity extends AppCompatActivity {
     public void stopCar(View view) {
         drive("myfirst/test","s","Stopping");
     }
+    
+    public void settings(View view){
+        drive("myfirst/test", "s", "Stopping");
+        Intent i =new Intent(this, Settings.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }        
 
     public void playAudio(int AudioFile){
         final MediaPlayer mp3 = MediaPlayer.create(this, AudioFile);
