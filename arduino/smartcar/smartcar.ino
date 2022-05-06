@@ -1,5 +1,4 @@
 #include <vector>
-#include <string>
 #include <Smartcar.h>
 #include <MQTT.h>
 #include <WiFi.h>
