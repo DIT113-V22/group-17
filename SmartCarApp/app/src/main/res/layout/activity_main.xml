@@ -211,6 +211,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reverse"
         app:layout_constraintVertical_bias="0.88" />
+
     <View
         android:id="@+id/view"
         android:layout_width="115dp"
@@ -218,10 +219,10 @@
         android:foreground="@drawable/speedometer_colour"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.901"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.538" />
+        app:layout_constraintVertical_bias="0.446" />
 
     <TextView
         android:id="@+id/textView"
@@ -231,14 +232,14 @@
         android:clickable="true"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:textColor="@color/baby_blue"
+        android:textColor="?attr/text_color"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.894"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
+        app:layout_constraintVertical_bias="0.45" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
