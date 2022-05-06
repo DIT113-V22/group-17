@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                         value = value * 100.0;
                         int temp = (int) value;
                         value = temp / 100.0;
-                        mSpeedometer.setText(value + " m/s");
+                        mSpeedometer.setText(value + "\nm/s");
 
                     }else {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
