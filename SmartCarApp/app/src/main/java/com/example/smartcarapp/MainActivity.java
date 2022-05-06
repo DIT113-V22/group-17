@@ -9,14 +9,12 @@ import android.os.CountDownTimer;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SwitchCompat;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -24,7 +22,7 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -39,9 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public static MqttClient mMqttClient;
     private boolean isConnected = false;
     public static ImageView mCameraView;
-    TextView txtView;
     public ImageView mic;
-    SwitchCompat switchCompat;
     private TextView mSpeedometer;
 
     @Override
@@ -52,17 +48,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.Theme_Light);
         }
-        switchCompat = findViewById(R.id.darkMode_switch);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
-            }
-        });
         setContentView(R.layout.activity_main);
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         mCameraView = findViewById(R.id.imageView);
