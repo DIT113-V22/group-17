@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 public void messageArrived(String topic, MqttMessage message) {
                     if (topic.equals("/smartcar/camera")) {
                         final Bitmap bm = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
-
                         final byte[] payload = message.getPayload();
                         final int[] colors = new int[IMAGE_WIDTH * IMAGE_HEIGHT];
                         for (int ci = 0; ci < colors.length; ++ci) {

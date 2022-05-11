@@ -21,19 +21,6 @@ public class Settings extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        switchCompat = findViewById(R.id.darkMode_switch);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
-            }
-
-
-        });
     }
 
     public void mainActivity(View view) {
