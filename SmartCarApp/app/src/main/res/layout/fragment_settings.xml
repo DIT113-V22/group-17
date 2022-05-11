@@ -8,8 +8,8 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/darkMode_switch"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingLeft="25dp"
         android:text="Dark mode"
         android:textColor="?attr/text_color"
