@@ -39,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
     public static ImageView mCameraView;
     public ImageView mic;
     private TextView mSpeedometer;
+    private TextView travelledDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserData user = new UserData(15);
+        JsonFunctions.objectToJson(user);
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             setTheme(R.style.Theme_Dark);
         } else {
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
         mCameraView = findViewById(R.id.imageView);
         mSpeedometer = findViewById(R.id.textView);
+        travelledDistance = findViewById(R.id.travelledDistance);
         connectToMqttBroker();
         mic = findViewById(R.id.speechMic);
         mic.setOnClickListener(view -> {
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
                     mMqttClient.subscribe("/smartcar/speedometer", QOS,null);
+                    mMqttClient.subscribe("/smartcar/travelledDistance",QOS,null);
                 }
 
                 @Override
@@ -137,13 +142,14 @@ public class MainActivity extends AppCompatActivity {
                         bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
                         mCameraView.setImageBitmap(bm);
                     }else if(topic.equals("/smartcar/speedometer")){
-                        double value = Double.parseDouble(message.toString());
-                        value = value * 100.0;
-                        int temp = (int) value;
-                        value = temp / 100.0;
+                        double value = UsefulFunctions.truncateNumber(message);
+
                         mSpeedometer.setText(value + "\nm/s");
 
-                    }else {
+                    }else if(topic.equals("/smartcar/travelledDistance")) {
+                        double value = UsefulFunctions.truncateNumber(message);
+                        travelledDistance.setText("Travelled distance: "+UsefulFunctions.convertToKM(value) + " km");
+                    }else{
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
                 }
