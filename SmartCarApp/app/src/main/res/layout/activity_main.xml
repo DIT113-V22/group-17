@@ -170,8 +170,8 @@
         android:onClick="settings"
         android:text=""
         app:icon="@drawable/icons8_settings_50"
-        app:iconSize="40dp"
         app:iconGravity="textStart"
+        app:iconSize="40dp"
         app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button3"
@@ -188,8 +188,8 @@
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text=""
         app:icon="@drawable/icons8_house_50"
-        app:iconSize="40dp"
         app:iconGravity="textStart"
+        app:iconSize="40dp"
         app:iconTint="?attr/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -254,6 +254,19 @@
         app:layout_constraintVertical_bias="0.838"
         app:srcCompat="@drawable/google_voice" />
 
+    <TextView
+        android:id="@+id/travelledDistance"
+        android:layout_width="319dp"
+        android:layout_height="46dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/forward"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.449" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
