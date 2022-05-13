@@ -8,7 +8,7 @@ import android.os.Looper;
 
 import java.io.IOException;
 
-//This class will be used later to play the audio in a different thread
+//This class will be used later to execute commands in parallel
 public class MultiThread extends Thread {
     int audioFile;
     Context context;
@@ -19,12 +19,7 @@ public class MultiThread extends Thread {
     }
     @Override
     public void run() {
-        System.out.println("EEEEEEEEEEEEEEE");
-        try {
-            playAudio();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
     public void playAudio() throws InterruptedException {
         final MediaPlayer mp3 = MediaPlayer.create(context,audioFile);

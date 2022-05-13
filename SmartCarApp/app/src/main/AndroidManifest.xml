@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Light">
         <activity
-            android:name=".Settings"
+            android:name=".SettingsFragment"
             android:exported="false" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 </manifest>

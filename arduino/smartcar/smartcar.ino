@@ -122,6 +122,10 @@ void loop()
       Camera.readFrame(frameBuffer.data());
       mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
                    false, 0);
+      const auto avgOdometerSpeed = String(car.getSpeed());
+      const auto travelledDistance = String(car.getDistance());
+      mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed);
+      mqtt.publish( "/smartcar/travelledDistance", travelledDistance);             
     }
 #endif
     static auto previousTransmission = 0UL;
@@ -131,13 +135,6 @@ void loop()
       mqtt.publish("/smartcar/ultrasound/front", distance);
     }
 
-    static auto previousTime = 0UL;
-    float parseFloat;
-    if (currentTime - previousTime >= 33) {
-        previousTime = currentTime;
-        const auto avgOdometerSpeed = String(car.getSpeed());
-        mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
-    }
    }
     Serial.println(front.getDistance());
     delay(100);
