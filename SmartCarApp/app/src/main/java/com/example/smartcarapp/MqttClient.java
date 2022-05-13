@@ -101,7 +101,6 @@ public class MqttClient {
         options.setPassword(password.toCharArray());
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
-
         try {
             mMqttAndroidClient.connect(options, null, connectionCallback);
         } catch (MqttException e) {
