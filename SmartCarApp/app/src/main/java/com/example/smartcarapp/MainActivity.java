@@ -1,7 +1,5 @@
 package com.example.smartcarapp;
 
-import static com.example.smartcarapp.HomeFragment.mMqttClient;
-
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.settings:
                     replaceFragment(new SettingsFragment());
-                    mMqttClient.publish("myfirst/test","s",1,null);
                     break;
             }
 
