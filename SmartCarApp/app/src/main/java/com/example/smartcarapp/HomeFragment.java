@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment {
                     isConnected = true;
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
-                    Toast.makeText(getContext(), successfulConnection, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), successfulConnection, Toast.LENGTH_SHORT).show();
 
 
 

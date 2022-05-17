@@ -9,8 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.smartcarapp.databinding.ActivityMainBinding;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    FragmentManager fragmentManager;
+    SettingsFragment settingsFragment = new SettingsFragment();
+    public static boolean darkMode = false;
 
 
     @Override
@@ -18,31 +23,43 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        if (darkMode){
+        replaceFragment(new HomeFragment());}
+
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    if(!(getVisibleFragment() instanceof HomeFragment)){
+                        replaceFragment(new HomeFragment());
+                    }
                     break;
                 case R.id.profile:
+                    if(!(getVisibleFragment() instanceof ProfileFragment)) {
                     replaceFragment(new ProfileFragment());
-                    break;
+                } break;
                 case R.id.settings:
+
                     replaceFragment(new SettingsFragment());
                     break;
             }
-
             return true;
         });
-
-
     }
-    private void replaceFragment(Fragment fragment){
+    public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
 
-
+    //This is to check which fragment is the current one(created by Ergi)
+    public Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
+    }
 }

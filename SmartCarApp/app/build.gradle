@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdk 30
-
     defaultConfig {
         applicationId "com.example.smartcarapp"
         minSdkVersion 28
