@@ -7,11 +7,8 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-public class logIn extends AppCompatActivity implements View.OnClickListener {
+public class LogInScreen extends AppCompatActivity implements View.OnClickListener {
     Button button;
 
     @SuppressLint("WrongViewCast")

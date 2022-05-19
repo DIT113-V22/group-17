@@ -27,13 +27,13 @@
         <item name="colorOnPrimary">@color/black</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/Red_tester</item>
-        <item name="colorSecondaryVariant">@color/Red_tester</item>
+        <item name="colorSecondary">@color/baby_blue</item>
+        <item name="colorSecondaryVariant">@color/baby_blue</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="9">@color/dark_mode</item>
         <item name="background_color">@color/dark_mode</item>
-        <item name="text_color">@color/Red_tester</item>
+        <item name="text_color">@color/white</item>
         <item name="icon_color">@color/Red_tester</item>
         <item name="android:navigationBarColor">@color/dark_mode</item>
         <!-- Customize your theme here. -->

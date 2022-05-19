@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".logIn"/>
+        <activity android:name=".LogInScreen"/>
 
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
