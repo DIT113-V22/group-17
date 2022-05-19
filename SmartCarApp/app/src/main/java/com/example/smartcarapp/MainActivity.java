@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void replaceFragment(Fragment fragment){
-        if (darkmode == false) {
+        if (!darkmode) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
