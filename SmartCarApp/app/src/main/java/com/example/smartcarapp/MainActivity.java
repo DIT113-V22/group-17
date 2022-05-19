@@ -13,9 +13,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    FragmentManager fragmentManager;
-    SettingsFragment settingsFragment = new SettingsFragment();
-    public static boolean darkMode = false;
 
 
     @Override
@@ -23,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        if (darkMode){
-        replaceFragment(new HomeFragment());}
+
+        replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {

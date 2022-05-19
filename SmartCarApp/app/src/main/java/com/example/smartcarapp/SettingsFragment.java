@@ -1,9 +1,9 @@
 package com.example.smartcarapp;
 
-import static com.example.smartcarapp.MainActivity.darkMode;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -74,6 +75,16 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        Button button = (Button) view
+                .findViewById(R.id.login);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), logIn.class);
+                ((MainActivity) getActivity()).startActivity(intent);
+            }
+
+        });
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             getActivity().setTheme(R.style.darkTheme);
         } else {
@@ -89,12 +100,11 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    getFragmentManager().beginTransaction().detach(SettingsFragment.this).attach(SettingsFragment.this).commit();
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    getFragmentManager().beginTransaction().detach(SettingsFragment.this).attach(SettingsFragment.this).commit();
-                }darkMode=true;
+                }
             }
         }); return view;
+
     }
 }
