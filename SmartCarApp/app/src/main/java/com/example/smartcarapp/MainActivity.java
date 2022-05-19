@@ -44,20 +44,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void replaceFragment(Fragment fragment){
-        if (!darkmode) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, fragment);
-            fragmentTransaction.commit();
-        } else {
-            fragment = new SettingsFragment();
+        if (!darkmode) {} else {fragment = new SettingsFragment();}
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
             fragmentTransaction.commit();
             darkmode = false;
         }
-    }
 
     //This is to check which fragment is the current one(created by Ergi)
     public Fragment getVisibleFragment() {
