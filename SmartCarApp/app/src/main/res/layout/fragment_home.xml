@@ -88,24 +88,24 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
-        android:id="@+id/reverse"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
-        android:background="@android:color/transparent"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:rotation="270"
-        android:text=""
-        app:backgroundTint="@android:color/transparent"
-        app:icon="@drawable/icons8_chevron_left_50"
-        app:iconSize="100dp"
-        app:iconTint="?attr/icon_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopCar"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+            android:id="@+id/reverse"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:rotation="270"
+            android:text=""
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/icons8_chevron_left_50"
+            app:iconSize="100dp"
+            app:iconTint="?attr/icon_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stopCar"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="SpeakableTextPresentCheck" />
 
 
         <Button
@@ -199,8 +199,8 @@
 
         <Button
             android:id="@+id/plus"
-            android:layout_width="78dp"
-            android:layout_height="56dp"
+            android:layout_width="71dp"
+            android:layout_height="47dp"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:onClick="plus"
@@ -212,7 +212,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/integer_number"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.75" />
+            app:layout_constraintVertical_bias="0.777" />
 
         <TextView
             android:id="@+id/integer_number"
@@ -223,28 +223,27 @@
             android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.084"
+            app:layout_constraintEnd_toStartOf="@+id/plus"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/minus"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.578" />
+            app:layout_constraintTop_toBottomOf="@+id/maxSpeed"
+            app:layout_constraintVertical_bias="0.305" />
 
         <Button
             android:id="@+id/minus"
-            android:layout_width="71dp"
-            android:layout_height="57dp"
+            android:layout_width="79dp"
+            android:layout_height="60dp"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:onClick="minus"
             app:icon="@drawable/ic_baseline_minimize_48"
-            app:iconSize="65dp"
+            app:iconSize="80dp"
             app:iconTint="?attr/icon_color"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toStartOf="@+id/integer_number"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/autoMode"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.507" />
+            app:layout_constraintTop_toBottomOf="@+id/maxSpeed" />
 
         <TextView
             android:id="@+id/maxSpeed"

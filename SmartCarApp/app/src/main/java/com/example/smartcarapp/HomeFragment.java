@@ -48,18 +48,19 @@ public class HomeFragment extends Fragment {
     private boolean isConnected = false;
 
     public ImageView mic;
-    private static TextView mSpeedometer;
-    private static ImageView mCameraView;
-    private static TextView displayInteger;
-    private static Button plus;
-    private int minteger = 0;
-    private static Button minus;
-    private static Button forward;
-    private static Button backward;
-    private static Button turnLeft;
-    private static Button turnRight;
-    private static Button stopCar;
-    private static TextView travelledDistance;
+    private TextView mSpeedometer;
+    private ImageView mCameraView;
+    private TextView displayInteger;
+    private Button plus;
+    private int minteger;
+    private Button minus;
+    private Button forward;
+    private Button backward;
+    private Button turnLeft;
+    private Button turnRight;
+    private Button stopCar;
+    private TextView travelledDistance;
+    private int counter = 0;
 
 
     // TODO: Rename and change types of parameters
@@ -140,6 +141,7 @@ public class HomeFragment extends Fragment {
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
                     mMqttClient.subscribe("/smartcar/speedometer", QOS,null);
                     mMqttClient.subscribe("/smartcar/travelledDistance",QOS,null);
+                    mMqttClient.subscribe("/smartcar/defaultSpeed",QOS,null);
                 }
 
                 @Override
@@ -183,6 +185,11 @@ public class HomeFragment extends Fragment {
                     }else if(topic.equals("/smartcar/travelledDistance")) {
                         double value = UsefulFunctions.truncateNumber(message);
                         travelledDistance.setText("Travelled distance: "+UsefulFunctions.convertToKM(value) + " km");
+                    }else if(topic.equals("/smartcar/defaultSpeed" ) && counter==0) {
+                        minteger = Integer.parseInt(message.toString());
+                        display(minteger);
+                        counter=1;
+
                     }else{
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
@@ -244,8 +251,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void display(int number) {
-        displayInteger.setText("" + number);
+        //displayInteger.setText("" + number);
         mMqttClient.publish("smartcar/fspeed",Integer.toString(number),1,null);
+        displayInteger.setText("" + number);
     }
 
 

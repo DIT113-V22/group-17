@@ -69,9 +69,11 @@ void autoStop(String message){
     car.setSpeed(0);
     car.setAngle(0);
   }
- 
 }
-
+void setCarSpeed(){
+  
+}
+const auto counter = 0;
 const auto mqttBrokerUrl = "127.0.0.1";
 
 void setup()
@@ -79,7 +81,7 @@ void setup()
     Serial.begin(9600);
    
   #ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 15);
+  Camera.begin(QVGA, RGB888, 30);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
   
@@ -106,9 +108,11 @@ Serial.println("Connecting to MQTT broker");
     
     if(topic=="myfirst/test"){
       autoStop(message);
-    }if(topic=="smartcar/fspeed"){
+    }else if(topic=="smartcar/fspeed"){
        fSpeed = message.toInt();
-       //car.setSpeed(fSpeed);
+       if(car.getSpeed()>0){
+       car.setSpeed(fSpeed);
+       }
     }
   });
 }
@@ -122,11 +126,15 @@ void loop()
     const auto currentTime = millis();
 #ifdef __SMCE__
     static auto previousFrame = 0UL;
-    if (currentTime - previousFrame >= 65) {
+    if (currentTime - previousFrame >= 33) {
       previousFrame = currentTime;
       Camera.readFrame(frameBuffer.data());
+      const auto avgOdometerSpeed = String(car.getSpeed());
+      mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed);
       mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
                    false, 0);
+      const auto defaultSpeed = String(fSpeed);
+      mqtt.publish("/smartcar/defaultSpeed", defaultSpeed);             
     }
 #endif
     static auto previousTransmission = 0UL;
@@ -134,14 +142,6 @@ void loop()
       previousTransmission = currentTime;
       const auto distance = String(front.getDistance());
       mqtt.publish("/smartcar/ultrasound/front", distance);
-    }
-
-    static auto previousTime = 0UL;
-    float parseFloat;
-    if (currentTime - previousTime >= 65) {
-        previousTime = currentTime;
-        const auto avgOdometerSpeed = String(car.getSpeed());
-        mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
     }
    }
     Serial.println(front.getDistance());
