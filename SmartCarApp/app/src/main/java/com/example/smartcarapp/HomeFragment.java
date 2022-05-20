@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -130,7 +128,7 @@ public class HomeFragment extends Fragment {
                     isConnected = true;
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
-                    Toast.makeText(getContext(), successfulConnection, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), successfulConnection, Toast.LENGTH_SHORT).show();
 
 
 
