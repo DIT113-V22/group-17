@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/background_color"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
@@ -187,7 +188,7 @@
             android:layout_width="319dp"
             android:layout_height="46dp"
             android:fontFamily="sans-serif-medium"
-            android:textColor="#000000"
+            android:textColor="?attr/text_color"
             android:textSize="22sp"
             app:layout_constraintBottom_toTopOf="@+id/forward"
             app:layout_constraintEnd_toStartOf="@+id/textView"

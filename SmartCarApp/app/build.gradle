@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdk 30
-
     defaultConfig {
         applicationId "com.example.smartcarapp"
         minSdkVersion 28
@@ -39,6 +38,7 @@ repositories {
 }
 
 dependencies {
+
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
