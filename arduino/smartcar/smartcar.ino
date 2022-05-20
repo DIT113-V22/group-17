@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #include <Smartcar.h>
 #include <MQTT.h>
 #include <WiFi.h>
@@ -17,8 +18,8 @@ const auto oneSecond = 1000UL;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
 const unsigned int MAX_DISTANCE = 300; //set the distance to 300
-const int fSpeed   = 70;  // 70% of the full speed forward
-const int bSpeed   = -70; // 70% of the full speed backward
+int fSpeed = 70;  // 70% of the full speed forward
+int bSpeed   = -70; // 70% of the full speed backward
 const int lDegrees = -75; // degrees to turn left
 const int rDegrees = 75;  // degrees to turn right
 bool flag = false;
@@ -78,7 +79,7 @@ void setup()
     Serial.begin(9600);
    
   #ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 30);
+  Camera.begin(QVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
   
@@ -94,16 +95,20 @@ void setup()
     wifiStatus = WiFi.status();
   }
 
-
 Serial.println("Connecting to MQTT broker");
   while (!mqtt.connect("arduino", "public", "public")) {
     Serial.print(".");
     delay(1000);
   }
   mqtt.subscribe("myfirst/test", 1);
+  mqtt.subscribe("smartcar/fspeed", 1);
   mqtt.onMessage([](String topic, String message){
+    
     if(topic=="myfirst/test"){
       autoStop(message);
+    }if(topic=="smartcar/fspeed"){
+       fSpeed = message.toInt();
+       //car.setSpeed(fSpeed);
     }
   });
 }
@@ -117,15 +122,11 @@ void loop()
     const auto currentTime = millis();
 #ifdef __SMCE__
     static auto previousFrame = 0UL;
-    if (currentTime - previousFrame >= 33) {
+    if (currentTime - previousFrame >= 65) {
       previousFrame = currentTime;
       Camera.readFrame(frameBuffer.data());
       mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
                    false, 0);
-      const auto avgOdometerSpeed = String(car.getSpeed());
-      const auto travelledDistance = String(car.getDistance());
-      mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed);
-      mqtt.publish( "/smartcar/travelledDistance", travelledDistance);             
     }
 #endif
     static auto previousTransmission = 0UL;
@@ -135,6 +136,13 @@ void loop()
       mqtt.publish("/smartcar/ultrasound/front", distance);
     }
 
+    static auto previousTime = 0UL;
+    float parseFloat;
+    if (currentTime - previousTime >= 65) {
+        previousTime = currentTime;
+        const auto avgOdometerSpeed = String(car.getSpeed());
+        mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed); 
+    }
    }
     Serial.println(front.getDistance());
     delay(100);

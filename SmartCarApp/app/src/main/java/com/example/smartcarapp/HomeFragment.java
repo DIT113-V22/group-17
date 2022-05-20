@@ -50,6 +50,10 @@ public class HomeFragment extends Fragment {
     public ImageView mic;
     private static TextView mSpeedometer;
     private static ImageView mCameraView;
+    private static TextView displayInteger;
+    private static Button plus;
+    private int minteger = 0;
+    private static Button minus;
     private static Button forward;
     private static Button backward;
     private static Button turnLeft;
@@ -224,6 +228,27 @@ public class HomeFragment extends Fragment {
         drive("myfirst/test","s","Stopping");
     }
 
+    public void plus(View view) {
+        minteger = minteger + 10;
+        if (minteger >= 100){
+            minteger = 100;
+        }
+        display(minteger);
+
+    }public void minus(View view) {
+        minteger = minteger - 10;
+        if(minteger <= 0){
+            minteger = 0;
+        }
+        display(minteger);
+    }
+
+    private void display(int number) {
+        displayInteger.setText("" + number);
+        mMqttClient.publish("smartcar/fspeed",Integer.toString(number),1,null);
+    }
+
+
 
     public void playAudio(int AudioFile){
         final MediaPlayer mp3 = MediaPlayer.create(getActivity(),AudioFile);
@@ -290,6 +315,9 @@ public class HomeFragment extends Fragment {
         mCameraView = v.findViewById(R.id.imageView);
         mSpeedometer= v.findViewById(R.id.textView);
         travelledDistance = v.findViewById(R.id.travelledDistance);
+        displayInteger =  v.findViewById(R.id.integer_number);
+        plus = v.findViewById(R.id.plus);
+        minus = v.findViewById(R.id.minus);
         forward = v.findViewById(R.id.forward);
         backward = v.findViewById(R.id.reverse);
         turnLeft = v.findViewById(R.id.turnLeft);
@@ -305,6 +333,8 @@ public class HomeFragment extends Fragment {
                 startActivityForResult(intent, 10);
             }
         });
+        plus.setOnClickListener(this::plus);
+        minus.setOnClickListener(this::minus);
         forward.setOnClickListener(this::forward);
         backward.setOnClickListener(this::reverse);
         turnLeft.setOnClickListener(this::turnLeft);
