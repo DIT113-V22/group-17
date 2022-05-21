@@ -48,14 +48,19 @@ public class HomeFragment extends Fragment {
     private boolean isConnected = false;
 
     public ImageView mic;
-    private static TextView mSpeedometer;
-    private static ImageView mCameraView;
-    private static Button forward;
-    private static Button backward;
-    private static Button turnLeft;
-    private static Button turnRight;
-    private static Button stopCar;
-    private static TextView travelledDistance;
+    private TextView mSpeedometer;
+    private ImageView mCameraView;
+    private TextView displayInteger;
+    private Button plus;
+    private int minteger;
+    private Button minus;
+    private Button forward;
+    private Button backward;
+    private Button turnLeft;
+    private Button turnRight;
+    private Button stopCar;
+    private TextView travelledDistance;
+    private int counter = 0;
 
 
     // TODO: Rename and change types of parameters
@@ -136,6 +141,7 @@ public class HomeFragment extends Fragment {
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
                     mMqttClient.subscribe("/smartcar/speedometer", QOS,null);
                     mMqttClient.subscribe("/smartcar/travelledDistance",QOS,null);
+                    mMqttClient.subscribe("/smartcar/defaultSpeed",QOS,null);
                 }
 
                 @Override
@@ -162,9 +168,9 @@ public class HomeFragment extends Fragment {
                         final byte[] payload = message.getPayload();
                         final int[] colors = new int[IMAGE_WIDTH * IMAGE_HEIGHT];
                         for (int ci = 0; ci < colors.length; ++ci) {
-                            final byte r = payload[3 * ci];
-                            final byte g = payload[3 * ci + 1];
-                            final byte b = payload[3 * ci + 2];
+                            final int r = payload[3 * ci] & 0xFF;
+                            final int g = payload[3 * ci + 1] & 0xFF;
+                            final int b = payload[3 * ci + 2] & 0xFF;
                             colors[ci] = Color.rgb(r, g, b);
                         }
                         bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
@@ -179,6 +185,11 @@ public class HomeFragment extends Fragment {
                     }else if(topic.equals("/smartcar/travelledDistance")) {
                         double value = UsefulFunctions.truncateNumber(message);
                         travelledDistance.setText("Travelled distance: "+UsefulFunctions.convertToKM(value) + " km");
+                    }else if(topic.equals("/smartcar/defaultSpeed" ) && counter==0) {
+                        minteger = Integer.parseInt(message.toString());
+                        display(minteger);
+                        counter=1;
+
                     }else{
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
@@ -223,6 +234,28 @@ public class HomeFragment extends Fragment {
     public void stopCar(View view) {
         drive("myfirst/test","s","Stopping");
     }
+
+    public void plus(View view) {
+        minteger = minteger + 10;
+        if (minteger >= 100){
+            minteger = 100;
+        }
+        display(minteger);
+
+    }public void minus(View view) {
+        minteger = minteger - 10;
+        if(minteger <= 0){
+            minteger = 0;
+        }
+        display(minteger);
+    }
+
+    private void display(int number) {
+        //displayInteger.setText("" + number);
+        mMqttClient.publish("smartcar/fspeed",Integer.toString(number),1,null);
+        displayInteger.setText("" + number);
+    }
+
 
 
     public void playAudio(int AudioFile){
@@ -290,6 +323,9 @@ public class HomeFragment extends Fragment {
         mCameraView = v.findViewById(R.id.imageView);
         mSpeedometer= v.findViewById(R.id.textView);
         travelledDistance = v.findViewById(R.id.travelledDistance);
+        displayInteger =  v.findViewById(R.id.integer_number);
+        plus = v.findViewById(R.id.plus);
+        minus = v.findViewById(R.id.minus);
         forward = v.findViewById(R.id.forward);
         backward = v.findViewById(R.id.reverse);
         turnLeft = v.findViewById(R.id.turnLeft);
@@ -305,6 +341,8 @@ public class HomeFragment extends Fragment {
                 startActivityForResult(intent, 10);
             }
         });
+        plus.setOnClickListener(this::plus);
+        minus.setOnClickListener(this::minus);
         forward.setOnClickListener(this::forward);
         backward.setOnClickListener(this::reverse);
         turnLeft.setOnClickListener(this::turnLeft);
