@@ -88,14 +88,6 @@ void setup()
   WiFi.begin(ssid, pass); 
   mqtt.begin(mqttBrokerUrl, 1883, net);
    
-  Serial.println("Connecting to WiFi...");
-  auto wifiStatus = WiFi.status();
-  while (wifiStatus != WL_CONNECTED && wifiStatus != WL_NO_SHIELD) {
-    Serial.println(wifiStatus);
-    Serial.print(".");
-    delay(1000);
-    wifiStatus = WiFi.status();
-  }
 
 Serial.println("Connecting to MQTT broker");
   while (!mqtt.connect("arduino", "public", "public")) {
@@ -129,12 +121,14 @@ void loop()
     if (currentTime - previousFrame >= 33) {
       previousFrame = currentTime;
       Camera.readFrame(frameBuffer.data());
-      const auto avgOdometerSpeed = String(car.getSpeed());
-      mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed);
       mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
                    false, 0);
+      const auto avgOdometerSpeed = String(car.getSpeed());             
       const auto defaultSpeed = String(fSpeed);
-      mqtt.publish("/smartcar/defaultSpeed", defaultSpeed);             
+      const auto travelledDistance = String(car.getDistance());
+      mqtt.publish("/smartcar/speedometer",  avgOdometerSpeed);
+      mqtt.publish("/smartcar/defaultSpeed", defaultSpeed);
+      mqtt.publish( "/smartcar/travelledDistance", travelledDistance);             
     }
 #endif
     static auto previousTransmission = 0UL;
