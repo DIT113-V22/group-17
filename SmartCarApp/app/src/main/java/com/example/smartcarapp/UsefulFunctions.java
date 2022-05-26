@@ -7,18 +7,12 @@ import java.math.BigDecimal;
 //This class has simple functions like truncation and stuff
 public class UsefulFunctions {
     //takes the string, converts it into a double and then truncates it
-    public static  double truncateNumber(MqttMessage result){
+    public static int convertToInt(MqttMessage result){
         double value = Double.parseDouble(result.toString());
-        value = value * 100.0;
+        value = value/100;
         int temp = (int) value;
-        value = temp / 100.0;
-        return value;
+        return temp;
     }
 
-    public static String convertToKM(Double distance){
-        BigDecimal distanceInKm = new BigDecimal(distance / 1000);
-        distanceInKm = distanceInKm.setScale(1, BigDecimal.ROUND_HALF_UP);
-        return String.valueOf(distanceInKm);
-    }
 
 }
