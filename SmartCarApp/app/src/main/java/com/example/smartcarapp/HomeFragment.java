@@ -2,6 +2,7 @@ package com.example.smartcarapp;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.os.CountDownTimer;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -214,9 +216,6 @@ public class HomeFragment extends Fragment {
         mMqttClient.publish(topic,message,QOS,null);
     }
 
-    public void forward(View view) {
-        drive("myfirst/test","f","Moving forward");
-    }
 
     public void reverse(View view) {
         drive("myfirst/test","b","Moving backward");
@@ -326,6 +325,7 @@ public class HomeFragment extends Fragment {
         speechCommands(requestCode,resultCode,data);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -355,10 +355,66 @@ public class HomeFragment extends Fragment {
         });
         plus.setOnClickListener(this::plus);
         minus.setOnClickListener(this::minus);
-        forward.setOnClickListener(this::forward);
-        backward.setOnClickListener(this::reverse);
-        turnLeft.setOnClickListener(this::turnLeft);
-        turnRight.setOnClickListener(this::turnRight);
+        forward.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        drive("myfirst/test","f","Moving forward");
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+                        drive("myfirst/test","s","Stopping the car");
+                        return true;
+                }
+                return false;
+            }
+        });
+        backward.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        drive("myfirst/test","b","Moving forward");
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+                        drive("myfirst/test","s","Stopping the car");
+                        return true;
+                }
+                return false;
+            }
+        });
+        turnLeft.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        drive("myfirst/test","l","Moving forward");
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+                        drive("myfirst/test","s","Stopping the car");
+                        return true;
+                }
+                return false;
+            }
+        });
+        turnRight.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        drive("myfirst/test","r","Moving forward");
+                        return true;
+                    case MotionEvent.ACTION_UP:
+
+                        drive("myfirst/test","s","Stopping the car");
+                        return true;
+                }
+                return false;
+            }
+        });
         stopCar.setOnClickListener(this::stopCar);
         return v;
     }

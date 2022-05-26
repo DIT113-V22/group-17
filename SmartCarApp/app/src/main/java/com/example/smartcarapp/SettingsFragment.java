@@ -36,16 +36,6 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-/*    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
-
 
 
     @Override
@@ -66,16 +56,6 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        Button button = (Button) view
-                .findViewById(R.id.login);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), LogInScreen.class);
-                ((MainActivity) getActivity()).startActivity(intent);
-            }
-
-        });
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             getActivity().setTheme(R.style.darkTheme);
         } else {
