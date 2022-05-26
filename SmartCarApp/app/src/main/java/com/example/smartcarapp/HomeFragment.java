@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     public static MqttClient mMqttClient;
     private boolean isConnected = false;
+    public static double meters;
 
     public ImageView mic;
     private TextView mSpeedometer;
@@ -134,9 +135,6 @@ public class HomeFragment extends Fragment {
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     //Toast.makeText(getContext(), successfulConnection, Toast.LENGTH_SHORT).show();
-
-
-
                     mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
                     mMqttClient.subscribe("/smartcar/speedometer", QOS,null);
@@ -183,8 +181,10 @@ public class HomeFragment extends Fragment {
                         mSpeedometer.setText(value + "\nm/s");
 
                     }else if(topic.equals("/smartcar/travelledDistance")) {
-                        double value = UsefulFunctions.truncateNumber(message);
-                        travelledDistance.setText("Travelled distance: "+UsefulFunctions.convertToKM(value) + " km");
+                        int value = UsefulFunctions.convertToInt(message);
+                        System.out.println(value);
+                        setMeters(value);
+                        travelledDistance.setText("Travelled distance: "+ value + " m");
                     }else if(topic.equals("/smartcar/defaultSpeed" ) && counter==0) {
                         minteger = Integer.parseInt(message.toString());
                         display(minteger);
@@ -283,11 +283,12 @@ public class HomeFragment extends Fragment {
             String stringResult = result.get(0);
             message = SpeechToText.speechCommands(stringResult);
 
+
             CountDownTimer cntr_aCounter = new CountDownTimer(150, 1000) {
 
                 @Override
                 public void onTick(long l) {
-                    //200 iq if statement
+                    //200 IQ if statement
                     if(audioPath!=5){
                         playAudio(audioPath);
                     }
@@ -297,6 +298,12 @@ public class HomeFragment extends Fragment {
                 public void onFinish() {
                     if(!message.equals("")){
                         mMqttClient.publish("myfirst/test", message, 1, null);
+                        int targetMeters = SpeechToText.metersProcessing(stringResult);
+                        System.out.println(targetMeters);
+                        if (targetMeters > 0) {
+                            double currentMeters = meters;
+                            double currentMeters2 = meters;
+                        }
                     }
                 }
 
@@ -304,6 +311,11 @@ public class HomeFragment extends Fragment {
 
         }
 
+    }
+
+
+    public void setMeters(double value){
+        meters = value;
     }
 
 

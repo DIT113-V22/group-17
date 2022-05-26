@@ -45,7 +45,7 @@ std::vector<char> frameBuffer;
 
 void autoStop(String message){
   const auto distance = front.getDistance();
-  if(distance>0 and distance<150 and !flag){
+  if(distance>0 and distance<110 and !flag){
     car.setSpeed(0);
    } 
   if(message == "l"){
