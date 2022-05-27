@@ -6,7 +6,6 @@
         <item name="colorPrimaryVariant">@color/baby_blue</item>
         <item name="colorOnPrimary">@color/Red_tester</item>
         <item name="icon_color">@color/Red_tester</item>
-        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/switch_colour</item>
@@ -25,7 +24,6 @@
         <item name="colorPrimary">@color/dark_mode</item>
         <item name="colorPrimaryVariant">@color/dark_mode</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/baby_blue</item>
         <item name="colorSecondaryVariant">@color/baby_blue</item>
@@ -39,12 +37,6 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
-    </style>
     <style name="Button.White" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@android:color/white</item>
     </style>
