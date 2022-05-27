@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/baby_blue</item>
         <item name="colorPrimaryVariant">@color/baby_blue</item>
         <item name="colorOnPrimary">@color/Red_tester</item>
-        <item name="icon_color">@color/baby_blue</item>
+        <item name="icon_color">@color/Red_tester</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
 
         <!-- Secondary brand color. -->
