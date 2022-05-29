@@ -23,6 +23,7 @@ int bSpeed   = -70; // 70% of the full speed backward
 const int lDegrees = -75; // degrees to turn left
 const int rDegrees = 75;  // degrees to turn right
 bool flag = false;
+const int GYROSCOPE_OFFSET = 37;
 
 ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
@@ -38,12 +39,14 @@ DirectionlessOdometer rightOdometer{ arduinoRuntime,
                                      smartcarlib::pins::v2::rightOdometerPin,
                                      []() { rightOdometer.update(); },
                                      pulsesPerMeter };
- 
-DistanceCar car(arduinoRuntime,control, leftOdometer, rightOdometer);
+                                     
+GY50 gyroscope(arduinoRuntime, GYROSCOPE_OFFSET);
+SmartCar car(arduinoRuntime, control, gyroscope, leftOdometer, rightOdometer);
 SR04 front(arduinoRuntime, TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 std::vector<char> frameBuffer;
 
 void autoStop(String message){
+  //car.disableCruiseControl();
   const auto distance = front.getDistance();
   if(distance>0 and distance<110 and !flag){
     car.setSpeed(0);
@@ -70,18 +73,51 @@ void autoStop(String message){
     car.setAngle(0);
   }
 }
-void setCarSpeed(){
-  
+
+void voiceCommands(String message, boolean hasDistance){
+  if(message == "l"){
+    go(1, fSpeed);
+    rotate(-65,fSpeed);
+  if(!hasDistance){
+      car.setSpeed(fSpeed);
+      car.setAngle(0); 
+    }else{
+      return;
+    }
+  }else if(message == "r"){
+    go(1, fSpeed);
+    rotate(65,fSpeed);
+    if(!hasDistance){
+      car.setSpeed(fSpeed);
+      car.setAngle(0); 
+    }else{
+      return;
+    }
+  }else if(message == "f"){
+    if(!hasDistance){
+      car.setSpeed(fSpeed);
+      car.setAngle(0);
+    }else{
+      return;
+    }
+  }else if(message == "b"){
+    car.setSpeed(bSpeed);
+    car.setAngle(0);
+  }else if(message == "s"){
+    car.setSpeed(0);
+    car.setAngle(0);
+  }
 }
+
 const auto counter = 0;
 const auto mqttBrokerUrl = "127.0.0.1";
 
 void setup()
 {
     Serial.begin(9600);
-   
+    
   #ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 30);
+  Camera.begin(QVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   #endif
   
@@ -96,6 +132,8 @@ Serial.println("Connecting to MQTT broker");
   }
   mqtt.subscribe("myfirst/test", 1);
   mqtt.subscribe("smartcar/fspeed", 1);
+  mqtt.subscribe("smartcar/autodrive", 1);
+  mqtt.subscribe("smartcar/voice", 1);
   mqtt.onMessage([](String topic, String message){
     
     if(topic=="myfirst/test"){
@@ -105,10 +143,106 @@ Serial.println("Connecting to MQTT broker");
        if(car.getSpeed()>0){
        car.setSpeed(fSpeed);
        }
+    }else if(topic == "smartcar/voice"){
+      int centimeters = message.toInt();
+      //if we have a distance
+      if (centimeters > 0){
+        voiceCommands(message,true);
+        go(centimeters,fSpeed);
+      }else{
+        voiceCommands(message,false);
+      }
+      
     }
   });
 }
-  
+
+
+/**
+   Makes the car travel at the specified distance with a certain speed
+   @param centimeters   How far to travel in centimeters, positive for
+                        forward and negative values for backward
+   @param speed         The speed to travel
+*/
+void go(long centimeters, int speed)
+{
+    if (centimeters == 0)
+    {
+        return;
+    }
+    // Ensure the speed is towards the correct direction
+    speed = smartcarlib::utils::getAbsolute(speed) * ((centimeters < 0) ? -1 : 1);
+    car.setAngle(0);
+    car.setSpeed(speed);
+ 
+    long initialDistance          = car.getDistance();
+    bool hasReachedTargetDistance = false;
+    while (!hasReachedTargetDistance)
+    {
+        car.update();
+        auto currentDistance   = car.getDistance();
+        auto travelledDistance = initialDistance > currentDistance ? initialDistance - currentDistance : currentDistance - initialDistance;
+        hasReachedTargetDistance = travelledDistance >= smartcarlib::utils::getAbsolute(centimeters);
+    }
+    car.setSpeed(0);
+}
+
+/**
+   Rotate the car at the specified degrees with the certain speed
+   @param degrees   The degrees to turn. Positive values for clockwise
+                    negative for counter-clockwise.
+   @param speed     The speed to turn
+*/
+void rotate(int degrees, int speed)
+{
+    speed = smartcarlib::utils::getAbsolute(speed);
+    degrees %= 360; // Put degrees in a (-360,360) scale
+    if (degrees == 0)
+    {
+        return;
+    }
+ 
+    car.setSpeed(speed);
+    if (degrees > 0)
+    {
+        car.setAngle(90);
+    }
+    else
+    {
+        car.setAngle(-90);
+    }
+ 
+    const auto initialHeading    = car.getHeading();
+    bool hasReachedTargetDegrees = false;
+    while (!hasReachedTargetDegrees)
+    {
+        car.update();
+        auto currentHeading = car.getHeading();
+        if (degrees < 0 && currentHeading < initialHeading)
+        {
+            // If we are turning left and the current heading is larger than the
+            // initial one (e.g. started at 10 degrees and now we are at 350), we need to substract
+            // 360 so to eventually get a signed displacement from the initial heading (-20)
+            currentHeading -= 360;
+        }
+        else if (degrees > 0 && currentHeading > initialHeading)
+        {
+            // If we are turning right and the heading is smaller than the
+            // initial one (e.g. started at 350 degrees and now we are at 20), so to get a signed
+            // displacement (+30)
+            currentHeading += 360;
+        }
+        // Degrees turned so far is initial heading minus current (initial heading
+        // is at least 0 and at most 360. To handle the "edge" cases we substracted or added 360 to
+        // currentHeading)
+        int degreesTurnedSoFar  = initialHeading - currentHeading;
+        hasReachedTargetDegrees = smartcarlib::utils::getAbsolute(degreesTurnedSoFar)
+                                  >= smartcarlib::utils::getAbsolute(degrees);
+    }
+ 
+    car.setSpeed(0);
+}
+
 
 void loop()
 {
@@ -138,6 +272,5 @@ void loop()
       mqtt.publish("/smartcar/ultrasound/front", distance);
     }
    }
-    Serial.println(front.getDistance());
-    delay(100);
+    delay(1);
 }

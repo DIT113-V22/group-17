@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     public static MqttClient mMqttClient;
     private boolean isConnected = false;
-    public static double meters;
+    public static int targetMeters;
 
     public ImageView mic;
     private TextView mSpeedometer;
@@ -176,6 +176,7 @@ public class HomeFragment extends Fragment {
                         bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
                         mCameraView.setImageBitmap(bm);
                     }else if(topic.equals("/smartcar/speedometer")){
+                        //200 IQ operations here
                         double value = Double.parseDouble(message.toString());
                         value = value * 100.0;
                         int temp = (int) value;
@@ -184,8 +185,6 @@ public class HomeFragment extends Fragment {
 
                     }else if(topic.equals("/smartcar/travelledDistance")) {
                         int value = UsefulFunctions.convertToInt(message);
-                        System.out.println(value);
-                        setMeters(value);
                         travelledDistance.setText("Travelled distance: "+ value + " m");
                     }else if(topic.equals("/smartcar/defaultSpeed" ) && counter==0) {
                         minteger = Integer.parseInt(message.toString());
@@ -217,23 +216,11 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void reverse(View view) {
-        drive("myfirst/test","b","Moving backward");
-    }
-
-    public void turnRight(View view) {
-        drive("myfirst/test","r","Turning right");
-    }
-
-    public void turnLeft(View view) {
-        drive("myfirst/test","l","Turning left");
-    }
-
-
     public void stopCar(View view) {
         drive("myfirst/test","s","Stopping");
     }
 
+    //increases the max speed
     public void plus(View view) {
         minteger = minteger + 10;
         if (minteger >= 100){
@@ -241,6 +228,7 @@ public class HomeFragment extends Fragment {
         }
         display(minteger);
 
+    //decreases the max speed
     }public void minus(View view) {
         minteger = minteger - 10;
         if(minteger <= 0){
@@ -248,7 +236,7 @@ public class HomeFragment extends Fragment {
         }
         display(minteger);
     }
-
+    //displays the max speed
     private void display(int number) {
         //displayInteger.setText("" + number);
         mMqttClient.publish("smartcar/fspeed",Integer.toString(number),1,null);
@@ -256,7 +244,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-
+    //plays the respective mp3 file
     public void playAudio(int AudioFile){
         final MediaPlayer mp3 = MediaPlayer.create(getActivity(),AudioFile);
         CountDownTimer cntr_aCounter = new CountDownTimer(1000, 1000) {
@@ -275,13 +263,13 @@ public class HomeFragment extends Fragment {
 
     private String message;
     public static int audioPath;
-
+    /*gets the mic input, plays the audio file that's corresponds to the direction of the car
+     and calls the metersProcessing funnction to convert the string into an integer if it contains meters*/
     public  void speechCommands(int requestCode, int resultCode, Intent data){
         if (requestCode==10 && resultCode == RESULT_OK && data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String stringResult = result.get(0);
             message = SpeechToText.speechCommands(stringResult);
-
 
             CountDownTimer cntr_aCounter = new CountDownTimer(150, 1000) {
 
@@ -296,12 +284,11 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onFinish() {
                     if(!message.equals("")){
-                        mMqttClient.publish("myfirst/test", message, 1, null);
-                        int targetMeters = SpeechToText.metersProcessing(stringResult);
-                        System.out.println(targetMeters);
+                        mMqttClient.publish("smartcar/voice", message, 1, null);
+                        targetMeters = SpeechToText.metersProcessing(stringResult);
                         if (targetMeters > 0) {
-                            double currentMeters = meters;
-                            double currentMeters2 = meters;
+                            String centimeters = String.valueOf(targetMeters*100);
+                            mMqttClient.publish("smartcar/voice",centimeters,QOS,null);
                         }
                     }
                 }
@@ -311,12 +298,6 @@ public class HomeFragment extends Fragment {
         }
 
     }
-
-
-    public void setMeters(double value){
-        meters = value;
-    }
-
 
 
     @Override
@@ -344,6 +325,7 @@ public class HomeFragment extends Fragment {
         turnRight = v.findViewById(R.id.turnRight);
         stopCar = v.findViewById(R.id.stopCar);
         mic = v.findViewById(R.id.speechMic);
+        //listener for the mic(google's API)
         mic.setOnClickListener(view -> {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -355,6 +337,7 @@ public class HomeFragment extends Fragment {
         });
         plus.setOnClickListener(this::plus);
         minus.setOnClickListener(this::minus);
+        //Press and hold button
         forward.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -370,6 +353,7 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+        //Press and hold button
         backward.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -385,6 +369,7 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+        //Press and hold button
         turnLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -400,6 +385,7 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+        //Press and hold button
         turnRight.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

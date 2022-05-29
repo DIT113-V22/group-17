@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             mySwitch.setChecked(true);
         }
-
+        //dark mode switch
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
