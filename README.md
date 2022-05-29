@@ -12,6 +12,15 @@ The main objective is to allow users to control their cars remotely through an a
 
 We will be developing the android app in Android Studio using java. The car functionality is coded in Arduino IDE using C++ and can be emulated in the SMCE emulator. We are using the Mosquitto broker to establish an MQTT connection between the android app and the arduino file. The city environment is created in the Godot Engine to help with obstacle avoidance. Lastly, we will be using GitHub for collaborating on the project.
 
+## Demo video
+[Link to the Demo video](https://youtu.be/rwZtFJWdbIk)
+
+## User Manual
+[Link to the User manual](https://github.com/DIT113-V22/group-17/wiki/User-Manual)
+
+## Get Started (Includes installation guide)
+[Link to the Get started wiki page](https://github.com/DIT113-V22/group-17/wiki/Get-Started)
+
 ## The technologies we used:
 
 -  Android Studio
