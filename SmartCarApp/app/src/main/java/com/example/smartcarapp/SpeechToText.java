@@ -27,7 +27,7 @@ public class SpeechToText {
         }
         return mqttMessage;
     }
-
+    //Converts the string into an int if it contains meters and returns a 0 if it doesn't
     public static int metersProcessing(String mqttMessage){
         String resultInt = mqttMessage.replaceAll("[^0-9]", "");
         int metersInt = 0;

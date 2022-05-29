@@ -32,7 +32,6 @@
             android:layout_width="135dp"
             android:layout_height="135dp"
             android:background="@android:color/transparent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:rotation="90"
             android:text=""
             app:backgroundTint="@android:color/transparent"
@@ -53,7 +52,6 @@
             android:layout_width="135dp"
             android:layout_height="135dp"
             android:background="@android:color/transparent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:text=""
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/icons8_chevron_left_50"
@@ -72,7 +70,6 @@
             android:layout_width="135dp"
             android:layout_height="135dp"
             android:background="@android:color/transparent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:rotation="180"
             android:text=""
             app:backgroundTint="@android:color/transparent"
@@ -92,7 +89,6 @@
             android:layout_width="135dp"
             android:layout_height="135dp"
             android:background="@android:color/transparent"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:rotation="270"
             android:text=""
             app:backgroundTint="@android:color/transparent"
@@ -124,23 +120,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.831" />
 
-
-        <Switch
-            android:id="@+id/autoMode"
-            android:layout_width="268dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="56dp"
-            android:paddingHorizontal="40dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:switchMinWidth="60dp"
-            android:text="Auto drive"
-            android:textColor="?attr/text_color"
-            android:textSize="20sp"
-            android:thumbTint="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/view"
@@ -177,6 +156,7 @@
             android:layout_height="86dp"
             android:layout_marginStart="56dp"
             android:clickable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toTopOf="@+id/turnLeft"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
@@ -199,8 +179,8 @@
 
         <Button
             android:id="@+id/plus"
-            android:layout_width="71dp"
-            android:layout_height="47dp"
+            android:layout_width="78dp"
+            android:layout_height="60dp"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:icon="@drawable/icons8_plus_48"
@@ -208,10 +188,10 @@
             app:iconTint="?attr/icon_color"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/integer_number"
+            app:layout_constraintHorizontal_bias="0.915"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.777" />
+            app:layout_constraintVertical_bias="0.882" />
 
         <TextView
             android:id="@+id/integer_number"
@@ -222,11 +202,11 @@
             android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toStartOf="@+id/plus"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/minus"
-            app:layout_constraintTop_toBottomOf="@+id/maxSpeed"
-            app:layout_constraintVertical_bias="0.305" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.722" />
 
         <Button
             android:id="@+id/minus"
@@ -238,10 +218,11 @@
             app:iconSize="80dp"
             app:iconTint="?attr/icon_color"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toStartOf="@+id/integer_number"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/autoMode"
-            app:layout_constraintTop_toBottomOf="@+id/maxSpeed" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.561"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.882" />
 
         <TextView
             android:id="@+id/maxSpeed"
@@ -251,11 +232,11 @@
             android:textColor="?attr/text_color"
             android:textSize="30dp"
 
-            app:layout_constraintBottom_toTopOf="@+id/minus"
-            app:layout_constraintEnd_toStartOf="@+id/plus"
-            app:layout_constraintHorizontal_bias="0.56"
-            app:layout_constraintStart_toEndOf="@+id/minus"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.802"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.173" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
